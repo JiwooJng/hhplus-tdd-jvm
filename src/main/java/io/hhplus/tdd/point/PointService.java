@@ -6,8 +6,6 @@ import io.hhplus.tdd.database.UserPointTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class PointService {
         this.pointHistoryTable = pointHistoryTable;
     }
 
-    public UserPoint getUserPoint(@PathVariable long userId) {
+    public UserPoint getUserPoint(long userId) {
         UserPoint userPoint = userPointTable.selectById(userId);
 
         log.info("유저 포인트 조회 > 유저 id: {}, 잔액: {}", userId, userPoint.point());
@@ -34,7 +32,7 @@ public class PointService {
         return userPoint;
     }
 
-    public List<PointHistory> getPointHistoryList(@PathVariable long userId) {
+    public List<PointHistory> getPointHistoryList(long userId) {
          List<PointHistory> pointHistory = pointHistoryTable.selectAllByUserId(userId);
 
          log.info("유저 포인트 내역 조회 > 유저 id: {} 포인트 내역: {}", userId, pointHistory);
@@ -42,7 +40,7 @@ public class PointService {
          return pointHistory;
     }
 
-    public UserPoint charge(@PathVariable long userId, @RequestBody long chargeAmount) {
+    public UserPoint charge(long userId, long chargeAmount) {
         if (chargeAmount <= 0) {
             log.error("포인트 충전 금액은 1원 이상이어야 합니다.");
             throw new IllegalArgumentException("포인트 충전 실패");
@@ -66,7 +64,7 @@ public class PointService {
         return updateUserPoint;
     }
 
-    public UserPoint use(@PathVariable long userId, @RequestBody long useAmount) {
+    public UserPoint use(long userId, long useAmount) {
         if (useAmount <= 0) {
             log.error("포인트 사용 금액은 1원 이상이어야 합니다.");
             throw new IllegalArgumentException("포인트 사용 실패");
